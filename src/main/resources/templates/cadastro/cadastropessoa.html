@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Cadastro de pessoas</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.css"  media="screen,projection"/>
+	<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.min.css"  media="screen,projection"/>
+</head>
+<body>
+	<label>Cadastro de pessoas</label>
+	<form action="salvarpessoa" method="post" th:object="${pessoaobj}">
+		<label>ID</label>
+		<input name="id" th:field="*{id}" readonly="readonly">
+		<label>Nome</label>
+		<input name="nome" th:field="*{nome}">
+		<label>Sobrenome</label>
+		<input name="sobrenome" th:field="*{sobrenome}">
+		<label>Idade</label>
+		<input name="idade" th:field="*{idade}">
+		<input class="waves-effect waves-light btn" type="submit" value="Salvar"/>
+	</form>
+	
+	<br />
+	<br />
+	<a href="/listapessoas">Listar pessoas cadastradas</a>
+	<br />
+	<br />
+	
+	<form action="/pesquisarpessoa" method="post">
+		<label>Pequisar por nome:</label>
+		<input name="nomepesquisa">
+		<input class="waves-effect waves-light btn" type="submit" value="Buscar">
+	</form>
+	
+	<br />
+	<br />
+	
+	<table>
+		<tr th:each = "pessoa : ${pessoas}">
+			<td th:text = "${pessoa.id}"></td>
+			<td th:text = "${pessoa.nome}"></td>
+			<td th:text = "${pessoa.sobrenome}"></td>
+			<td th:text = "${pessoa.idade}"></td>
+			<td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Editar</a></td>
+			<td><a th:href="@{/removerpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Excluir</a></td>
+		</tr>
+	</table>
+	
+	<script type="text/javascript" src="materialize/js/materialize.js"></script>
+	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+</body>
+</html>
