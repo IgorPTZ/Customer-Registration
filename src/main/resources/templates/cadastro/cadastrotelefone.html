@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Cadastro de pessoas</title>
+	
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.css"  media="screen,projection"/>
+	<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.min.css"  media="screen,projection"/>
+	
+	<style type="text/css">
+		table.striped>tbody>tr:nth-child(odd) {
+			background-color: rgba(38, 166, 154, 0.5);
+		}
+		
+		form input[type=submit] {
+			color: white;
+		}
+	</style>
+</head>
+
+
+
+<body>
+	<h3>Spring + Thymeleaf + JPA + HTML 5 + Materialize</h3>
+	<h5>Cadastro de pessoas</h5>
+	
+	<a class="waves-effect waves-light btn" href="/cadastropessoa">Cadastro de pessoas</a>
+	<div th:each="pessoa : ${pessoaobj}">
+		<div class="row">
+			<p>Id: <span th:text="${pessoa.id}"></span></p>
+			<p>Nome: <span th:text="${pessoa.nome}"></span></p>
+			<p>Sobrenome: <span th:text="${pessoa.sobrenome}"></span></p>
+			<p>Idade <span th:text="${pessoa.idade}"></span></p>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="materialize/js/materialize.js"></script>
+	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+</body>
+</html>

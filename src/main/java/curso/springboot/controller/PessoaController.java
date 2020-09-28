@@ -22,9 +22,13 @@ public class PessoaController {
 	@RequestMapping(method=RequestMethod.GET, value="/cadastropessoa")
 	public ModelAndView iniciar() {
 		
+		Iterable<Pessoa> pessoas = pessoaRepository.findAll();
+		
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
 		
 		modelAndView.addObject("pessoaobj", new Pessoa());
+		
+		modelAndView.addObject("pessoas", pessoas);
 		
 		return modelAndView;
 	}
@@ -95,6 +99,18 @@ public class PessoaController {
 		modelAndView.addObject("pessoas", pessoaRepository.findPessoaByNome(nome));
 		
 		modelAndView.addObject("pessoaobj", new Pessoa());
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/inserirtelefone/{idpessoa}")
+	public ModelAndView inserirTelefones(@PathVariable("idpessoa") Long idPessoa) {
+		
+		Optional<Pessoa> pessoa = pessoaRepository.findById(idPessoa);
+		
+		ModelAndView modelAndView = new ModelAndView("cadastro/cadastrotelefone");
+		
+		modelAndView.addObject("pessoaobj", pessoa.get());
 		
 		return modelAndView;
 	}

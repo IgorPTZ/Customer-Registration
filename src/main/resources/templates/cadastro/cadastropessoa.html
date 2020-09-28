@@ -19,10 +19,10 @@
 	</style>
 </head>
 
-<h3>Spring + Thymeleaf + JPA + HTML 5 + Materialize</h3>
-<h5>Cadastro de pessoas</h5>
-
 <body>
+	<h3>Spring + Thymeleaf + JPA + HTML 5 + Materialize</h3>
+	<h5>Cadastro de pessoas</h5>
+
 	<div class="row">
 		<form action="salvarpessoa" id="formpessoa" method="post" th:object="${pessoaobj}" class="col s12">
 			<div class="row">
@@ -91,7 +91,7 @@
 		</thead>
 		<tr th:each = "pessoa : ${pessoas}">
 			<td th:text = "${pessoa.id}"></td>
-			<td th:text = "${pessoa.nome}"></td>
+			<td><a th:href="@{/inserirtelefone/{idpessoa}(idpessoa=${pessoa.id})}" ><span th:text = "${pessoa.nome}"></span></a></td>
 			<td th:text = "${pessoa.sobrenome}"></td>
 			<td th:text = "${pessoa.idade}"></td>
 			<td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Editar</a></td>
