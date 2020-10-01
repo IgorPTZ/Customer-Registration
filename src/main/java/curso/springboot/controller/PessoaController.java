@@ -11,13 +11,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import curso.springboot.model.Pessoa;
+import curso.springboot.model.Telefone;
 import curso.springboot.repository.PessoaRepository;
+import curso.springboot.repository.TelefoneRepository;
 
 @Controller
 public class PessoaController {
 	
 	@Autowired
 	private PessoaRepository pessoaRepository;
+	
+	@Autowired
+	private TelefoneRepository telefoneRepository;
 	
 	@RequestMapping(method=RequestMethod.GET, value="/cadastropessoa")
 	public ModelAndView iniciar() {
@@ -111,6 +116,42 @@ public class PessoaController {
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastrotelefone");
 		
 		modelAndView.addObject("pessoaobj", pessoa.get());
+		
+		modelAndView.addObject("telefones", telefoneRepository.getTelefones(idPessoa));
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value="**/salvarTelefone/{idpessoa}")
+	public ModelAndView salvarTelefone(Telefone telefone, @PathVariable("idpessoa") Long idPessoa) {
+		
+		Pessoa pessoa = pessoaRepository.findById(idPessoa).get();
+		
+		telefone.setPessoa(pessoa);
+		
+		telefoneRepository.save(telefone);
+		
+		ModelAndView modelAndView = new ModelAndView("cadastro/cadastrotelefone");
+		
+		modelAndView.addObject("pessoaobj", pessoa);
+		
+		modelAndView.addObject("telefones", telefoneRepository.getTelefones(idPessoa));
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/removerTelefone/{idtelefone}")
+	public ModelAndView excluirTelefone(@PathVariable("idtelefone") Long idTelefone) {
+		
+		Pessoa pessoa = telefoneRepository.findById(idTelefone).get().getPessoa();
+		
+		telefoneRepository.deleteById(idTelefone);
+		
+		ModelAndView modelAndView = new ModelAndView("cadastro/cadastrotelefone");
+		
+		modelAndView.addObject("pessoaobj", pessoa);
+		
+		modelAndView.addObject("telefones", telefoneRepository.getTelefones(pessoa.getId()));
 		
 		return modelAndView;
 	}
