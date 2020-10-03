@@ -1,9 +1,15 @@
 package curso.springboot.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,13 +47,32 @@ public class PessoaController {
 	// O valor **/ antes de salvarpessoa na string "**/salvarpessoa, ignora qualquer coisa na url
 	// que vem antes do /salvarpessoa, considerando apenas o /salvar pessoa como um trigger para chamar o controller
 	@RequestMapping(method=RequestMethod.POST, value="**/salvarpessoa")
-	public ModelAndView salvar(Pessoa pessoa) {
-		
-		pessoaRepository.save(pessoa);
+	public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult bindingResult) {
 		
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
 		
 		Iterable<Pessoa> pessoas = pessoaRepository.findAll();
+		
+		if(bindingResult.hasErrors()) {
+			
+			modelAndView.addObject("pessoas", pessoas);
+			
+			modelAndView.addObject("pessoaobj", pessoa);
+			
+			// Retorna as mensagens de erro para a view
+			List<String> mensagensDeErro = new ArrayList<String>();
+			
+			for(ObjectError objectError : bindingResult.getAllErrors()) {
+				
+				mensagensDeErro.add(objectError.getDefaultMessage());
+			}
+			
+			modelAndView.addObject("mensagensDeErro", mensagensDeErro);
+			
+			return modelAndView;
+		}
+		
+		pessoaRepository.save(pessoa);
 		
 		modelAndView.addObject("pessoas", pessoas);
 		
@@ -127,13 +152,24 @@ public class PessoaController {
 		
 		Pessoa pessoa = pessoaRepository.findById(idPessoa).get();
 		
-		telefone.setPessoa(pessoa);
-		
-		telefoneRepository.save(telefone);
-		
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastrotelefone");
 		
 		modelAndView.addObject("pessoaobj", pessoa);
+		
+		Boolean telefoneValido = telefone != null && 
+								 (telefone.getNumero() != null && telefone.getNumero().isEmpty()) ||
+								 telefone.getNumero() == null;
+		
+		if(!telefoneValido) {
+			
+			modelAndView.addObject("telefones", telefoneRepository.getTelefones(idPessoa));
+			
+			return modelAndView;
+		}
+		
+		telefone.setPessoa(pessoa);
+		
+		telefoneRepository.save(telefone);
 		
 		modelAndView.addObject("telefones", telefoneRepository.getTelefones(idPessoa));
 		
