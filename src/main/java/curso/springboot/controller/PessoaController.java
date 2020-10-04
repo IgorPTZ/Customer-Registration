@@ -156,13 +156,27 @@ public class PessoaController {
 		
 		modelAndView.addObject("pessoaobj", pessoa);
 		
-		Boolean telefoneValido = telefone != null && 
-								 (telefone.getNumero() != null && telefone.getNumero().isEmpty()) ||
-								 telefone.getNumero() == null;
+		Boolean telefoneInvalido =  (telefone != null && 
+								    (telefone.getNumero() != null && telefone.getNumero().isEmpty()) 
+								 || telefone.getNumero() == null
+				                 || (telefone.getTipo() != null && telefone.getTipo().isEmpty())
+				                 || telefone.getTipo() == null);
 		
-		if(!telefoneValido) {
+		if(telefoneInvalido) {
 			
 			modelAndView.addObject("telefones", telefoneRepository.getTelefones(idPessoa));
+			
+			List<String> mensagensDeErro = new ArrayList<String>();
+			
+			if(telefone.getNumero().isEmpty()) {
+				mensagensDeErro.add("O numero deve ser informado!");
+			}
+			
+			if(telefone.getTipo().isEmpty()) {
+				mensagensDeErro.add("O tipo deve ser informado!");
+			}
+			
+			modelAndView.addObject("mensagensDeErro", mensagensDeErro);
 			
 			return modelAndView;
 		}
