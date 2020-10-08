@@ -16,5 +16,9 @@ public class SpringbootApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootApplication.class, args);
+		
+		/*BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String result = encoder.encode("teste321");
+		System.out.println(result);*/
 	}
 }
