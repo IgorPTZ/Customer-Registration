@@ -1,6 +1,6 @@
 # Customer-Registration
 
-Api Rest for learn follows technologies:
+Application is using follows technologies:
 
 - Spring MVC
 - Thymeleaf
