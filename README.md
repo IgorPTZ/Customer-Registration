@@ -1,5 +1,4 @@
 # Customer-Registration
-Thymeleaf  + Spring MVC + JPA
 
 Api Rest for learn follows technologies:
 
