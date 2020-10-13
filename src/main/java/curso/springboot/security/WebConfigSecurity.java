@@ -28,7 +28,10 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/cadastropessoa").hasAnyRole("ADMIN", "GERENTE") // Permite acesso apenas a usuarios com permissao de admin (ROLE_ADMIN) ou gerente (ROLE_GERENTE)
 		.anyRequest().authenticated()
 		.and().formLogin().permitAll() // Permite qualquer usuario acessar o formulario de login
-		.and().logout() // Mapeia URL de logout e invalida usuario que estav autenticado
+		.loginPage("/login") // Redireciona para pagina de login personalizada (Substitui a tela de login default do Spring Security)
+		.defaultSuccessUrl("/cadastropessoa")
+		.failureUrl("/login?error=true")
+		.and().logout().logoutSuccessUrl("/login") // Mapeia URL de logout e invalida usuario que estav autenticado
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
 	}
 	
