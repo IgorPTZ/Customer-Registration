@@ -74,6 +74,8 @@ public class PessoaController {
 		
 		pessoaRepository.save(pessoa);
 		
+		pessoas = pessoaRepository.findAll();
+		
 		modelAndView.addObject("pessoas", pessoas);
 		
 		modelAndView.addObject("pessoaobj", new Pessoa());
