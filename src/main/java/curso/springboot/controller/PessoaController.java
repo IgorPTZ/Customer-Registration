@@ -72,6 +72,9 @@ public class PessoaController {
 			return modelAndView;
 		}
 		
+		// Comando para corrigir erro ao editar endereço de uma pessoa ja cadastrada e que possui telefones
+		pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId()));
+		
 		pessoaRepository.save(pessoa);
 		
 		pessoas = pessoaRepository.findAll();

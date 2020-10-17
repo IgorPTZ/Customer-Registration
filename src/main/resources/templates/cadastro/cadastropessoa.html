@@ -23,6 +23,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 		form input[type=submit] {
 			color: white;
 		}
+		
+		::-moz-placeholder{
+            color: rgba(38, 166, 154, 1);
+        }
 	</style>
 </head>
 
@@ -42,66 +46,76 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			<div class="row">
 				<div class="input-field col s6">
 					<label for="id" class="active">Id</label>
-					<input name="id" th:field="*{id}" id="id" readonly="readonly">
+					<input placeholder="Id" name="id" th:field="*{id}" id="id" readonly="readonly">
 				</div>
 				
 				<div class="input-field col s6">
 					<label for="nome" class="active">Nome</label>
-					<input name="nome" th:field="*{nome}" id="nome" class="validate">
+					<input placeholder="Nome" name="nome" th:field="*{nome}" id="nome" class="validate">
 				</div>
 			</div>
 			
 			<div class="row" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_GERENTE')">
 				<div class="input-field col s6">
 					<label for="sobrenome" class="active">Sobrenome</label>
-					<input name="sobrenome" th:field="*{sobrenome}" id="sobrenome" class="validate">
+					<input placeholder="Sobrenome" name="sobrenome" th:field="*{sobrenome}" id="sobrenome" class="validate">
 				</div>
 				
 				<div class="input-field col s6">
-					<label for="idade" class="active">Idade</label>
-					<input name="idade" th:field="*{idade}" id="idade" class="validate">
+					<label for="sexopessoa" class="active">Sexo</label>
+					<select>
+						<option value="MASCULINO" th:text="Masculino" />
+						<option value="FEMININO" th:text="Feminino" />
+					</select>
 				</div>
 			</div>
 			
 			<div class="row">
 				<div class="input-field col s12">
+					<label for="idade" class="active">Idade</label>
+					<input placeholder="Idade" name="idade" th:field="*{idade}" id="idade" class="validate">
+				</div>
+			</div>
+	
+			<div class="row">
+				<div class="input-field col s12">
 					<label for="cep" class="active">Cep</label>
-					<input name="cep" class="validate" th:field="*{cep}" id="cep">
+					<input placeholder="Cep" name="cep" class="validate" th:field="*{cep}" id="cep">
 				</div>
 			</div>
 			
 			<div class="row">
 				<div class="input-field col s12">
 					<label for="rua" class="active">Rua</label>
-					<input name="rua" class="validate" th:field="*{rua}" id="rua">
+					<input placeholder="Rua" name="rua" class="validate" th:field="*{rua}" id="rua">
 				</div>
 			</div>
 			
 			<div class="row">
 				<div class="input-field col s12">
 					<label for="bairro" class="active">Bairro</label>
-					<input name="bairro" class="validate" th:field="*{bairro}" id="bairro">
+					<input placeholder="Bairro" name="bairro" class="validate" th:field="*{bairro}" id="bairro">
 				</div>
 			</div>
 			
 			<div class="row">
 				<div class="input-field col s12">
 					<label for="cidade" class="active">Cidade</label>
-					<input name="cidade" class="validate" th:field="*{cidade}" id="cidade">
+					<input placeholder="Cidade" name="cidade" class="validate" th:field="*{cidade}" id="cidade">
 				</div>
 			</div>
 			
 			<div class="row">
 				<div class="input-field col s12">
 					<label for="uf" class="active">UF</label>
-					<input name="uf" class="validate" th:field="*{uf}" id="uf">
+					<input placeholder="UF" name="uf" class="validate" th:field="*{uf}" id="uf">
 				</div>
 			</div>
 			
 			<div class="row">
 				<div class="input-field col s12">
 					<label for="ibge" class="active">IBGE</label>
-					<input name="ibge" class="validate" th:field="*{ibge}" id="ibge">
+					<input placeholder="IBGE" name="ibge" class="validate" th:field="*{ibge}" id="ibge">
 				</div>
 			</div>
 			
