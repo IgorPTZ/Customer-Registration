@@ -32,119 +32,138 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <body>
 	<h3>Spring + Thymeleaf + JPA + HTML 5 + Materialize</h3>
-	<h5>Cadastro de pessoas</h5>
 
-	<div class="row">
-		
-		<br/>
-			<div th:each = "mensagem : ${mensagensDeErro}">
-				<span th:text = "${mensagem}"></span>
-			</div>
-		<br/>
-		
-		<form action="salvarpessoa" id="formpessoa" method="post" th:object="${pessoaobj}" class="col s12">
-			<div class="row">
-				<div class="input-field col s6">
-					<label for="id" class="active">Id</label>
-					<input placeholder="Id" name="id" th:field="*{id}" id="id" readonly="readonly">
+	<fieldset>
+		<legend>Cadastro de cliente</legend>
+		<div class="row">
+			
+			<br/>
+				<div th:each = "mensagem : ${mensagensDeErro}">
+					<span th:text = "${mensagem}"></span>
+				</div>
+			<br/>
+			
+			<form action="salvarpessoa" id="formpessoa" method="post" th:object="${pessoaobj}" class="col s12">
+				<div class="row">
+					<div class="input-field col s6">
+						<label for="id" class="active">Id</label>
+						<input placeholder="Id" name="id" th:field="*{id}" id="id" readonly="readonly">
+					</div>
+					
+					<div class="input-field col s6">
+						<label for="nome" class="active">Nome</label>
+						<input placeholder="Nome" name="nome" th:field="*{nome}" id="nome" class="validate">
+					</div>
 				</div>
 				
-				<div class="input-field col s6">
-					<label for="nome" class="active">Nome</label>
-					<input placeholder="Nome" name="nome" th:field="*{nome}" id="nome" class="validate">
-				</div>
-			</div>
-			
-			<div class="row" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_GERENTE')">
-				<div class="input-field col s6">
-					<label for="sobrenome" class="active">Sobrenome</label>
-					<input placeholder="Sobrenome" name="sobrenome" th:field="*{sobrenome}" id="sobrenome" class="validate">
+				<div class="row" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_GERENTE')">
+					<div class="input-field col s6">
+						<label for="sobrenome" class="active">Sobrenome</label>
+						<input placeholder="Sobrenome" name="sobrenome" th:field="*{sobrenome}" id="sobrenome" class="validate">
+					</div>
+					
+					<div class="input-field col s6">
+						<label for="sexo" class="active">Sexo</label>
+						<select class="browser-default" th:field="*{sexo}" id="sexo">
+							<option value="" disabled selected>Selecione</option>
+							<option value="MASCULINO" th:text="Masculino" />
+							<option value="FEMININO" th:text="Feminino" />
+						</select>
+					</div>
 				</div>
 				
-				<div class="input-field col s6">
-					<label for="sexopessoa" class="active">Sexo</label>
-					<select>
-						<option value="MASCULINO" th:text="Masculino" />
-						<option value="FEMININO" th:text="Feminino" />
-					</select>
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="idade" class="active">Idade</label>
+						<input placeholder="Idade" name="idade" th:field="*{idade}" id="idade" class="validate">
+					</div>
 				</div>
-			</div>
-			
-			<div class="row">
-				<div class="input-field col s12">
-					<label for="idade" class="active">Idade</label>
-					<input placeholder="Idade" name="idade" th:field="*{idade}" id="idade" class="validate">
+		
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="cep" class="active">Cep</label>
+						<input placeholder="Cep" name="cep" class="validate" th:field="*{cep}" id="cep">
+					</div>
 				</div>
-			</div>
-	
-			<div class="row">
-				<div class="input-field col s12">
-					<label for="cep" class="active">Cep</label>
-					<input placeholder="Cep" name="cep" class="validate" th:field="*{cep}" id="cep">
+				
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="rua" class="active">Rua</label>
+						<input placeholder="Rua" name="rua" class="validate" th:field="*{rua}" id="rua">
+					</div>
 				</div>
-			</div>
-			
-			<div class="row">
-				<div class="input-field col s12">
-					<label for="rua" class="active">Rua</label>
-					<input placeholder="Rua" name="rua" class="validate" th:field="*{rua}" id="rua">
+				
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="bairro" class="active">Bairro</label>
+						<input placeholder="Bairro" name="bairro" class="validate" th:field="*{bairro}" id="bairro">
+					</div>
 				</div>
-			</div>
-			
-			<div class="row">
-				<div class="input-field col s12">
-					<label for="bairro" class="active">Bairro</label>
-					<input placeholder="Bairro" name="bairro" class="validate" th:field="*{bairro}" id="bairro">
+				
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="cidade" class="active">Cidade</label>
+						<input placeholder="Cidade" name="cidade" class="validate" th:field="*{cidade}" id="cidade">
+					</div>
 				</div>
-			</div>
-			
-			<div class="row">
-				<div class="input-field col s12">
-					<label for="cidade" class="active">Cidade</label>
-					<input placeholder="Cidade" name="cidade" class="validate" th:field="*{cidade}" id="cidade">
+				
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="uf" class="active">UF</label>
+						<input placeholder="UF" name="uf" class="validate" th:field="*{uf}" id="uf">
+					</div>
 				</div>
-			</div>
-			
-			<div class="row">
-				<div class="input-field col s12">
-					<label for="uf" class="active">UF</label>
-					<input placeholder="UF" name="uf" class="validate" th:field="*{uf}" id="uf">
+				
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="ibge" class="active">IBGE</label>
+						<input placeholder="IBGE" name="ibge" class="validate" th:field="*{ibge}" id="ibge">
+					</div>
 				</div>
-			</div>
-			
-			<div class="row">
-				<div class="input-field col s12">
-					<label for="ibge" class="active">IBGE</label>
-					<input placeholder="IBGE" name="ibge" class="validate" th:field="*{ibge}" id="ibge">
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="input-field col s6">
-					<input class="waves-effect waves-light btn" type="submit" value="Salvar"/>
-					<button class="waves-effect waves-lightt btn" onclick="document.getElementById('formpessoa').reset();">Limpar</button>
-				</div>
-			</div>	
-		</form>
-	</div>
+				
+				<div class="row">
+					<div class="input-field col s6">
+						<input class="waves-effect waves-light btn" type="submit" value="Salvar"/>
+						<button class="waves-effect waves-lightt btn" onclick="document.getElementById('formpessoa').reset();">Limpar</button>
+					</div>
+				</div>	
+			</form>
+		</div>
+	</fieldset>
 	
 	<br />
 	<br />
 	
-	<div class="row">
-		<form action="/pesquisarpessoa" method="post" class="col s12">
-			<div class="row">
-				<div class="input-field col s12">
-					<label for="nomepesquisa" class="active">Pequisar por nome:</label>
-					<input name="nomepesquisa" id="nomepesquisa" class="validate">
-					<input class="waves-effect waves-light btn" type="submit" value="Buscar">
-					<a class="waves-effect waves-light btn" href="/listapessoas">Listar pessoas cadastradas</a>
+	<fieldset>
+		<legend>Campos de pesquisa</legend>
+		<div class="row">
+			<form action="/pesquisarpessoa" method="post" class="col s12">
+				<div class="row">
+					<div class="input-field col s6">
+						<label for="pesquisanome" class="active">Pequisar por nome:</label>
+						<input name="pesquisanome" id="pesquisanome" class="validate">
+					</div>
+					
+					<div class="input-field col s6">
+						<label for="pesquisasexo" class="active">Pesquisar por sexo:</label>
+						<select class="browser-default" name="pesquisasexo" id="pesquisasexo">
+							<option value="" disabled selected>Selecione</option>
+							<option value="MASCULINO" th:text="Masculino"/>
+							<option value="FEMININO" th:text="Feminino" />
+						</select>
+					</div>
 				</div>
-			</div>
-		</form>
-	</div>
+				
+				<div class="row">
+					<div class="input-field col s6">
+						<input class="waves-effect waves-light btn" type="submit" value="Buscar">
+						<a class="waves-effect waves-light btn" href="/listapessoas">Listar pessoas cadastradas</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</fieldset>
 
-	
 	<br />
 	<br />
 	

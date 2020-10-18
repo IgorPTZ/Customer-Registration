@@ -127,7 +127,8 @@ public class PessoaController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value="**/pesquisarpessoa")
-	public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nome) {
+	public ModelAndView pesquisar(@RequestParam("pesquisanome") String nome,
+								  @RequestParam("pesquisasexo") String sexo) {
 		
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
 		

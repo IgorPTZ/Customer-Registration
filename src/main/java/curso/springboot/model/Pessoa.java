@@ -48,6 +48,8 @@ public class Pessoa implements Serializable{
 	
 	private String ibge;
 	
+	private String sexo;
+	
 	@OneToMany(mappedBy="pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Telefone> telefones;
 
@@ -137,5 +139,13 @@ public class Pessoa implements Serializable{
 
 	public void setIbge(String ibge) {
 		this.ibge = ibge;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
 	}
 }
