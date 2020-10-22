@@ -7,4 +7,5 @@ Application is using follows technologies:
 - Spring Security
 - JPA
 - PostgreSQL
+- Jasper Report
 - API ViaCEP 
