@@ -20,6 +20,7 @@ import curso.springboot.model.Pessoa;
 import curso.springboot.model.Telefone;
 import curso.springboot.repository.PessoaRepository;
 import curso.springboot.repository.TelefoneRepository;
+import curso.springboot.util.ReportUtil;
 
 @Controller
 public class PessoaController {
@@ -29,6 +30,9 @@ public class PessoaController {
 	
 	@Autowired
 	private TelefoneRepository telefoneRepository;
+	
+	@Autowired
+	private ReportUtil reportUtil;
 	
 	@RequestMapping(method=RequestMethod.GET, value="/cadastropessoa")
 	public ModelAndView iniciar() {
