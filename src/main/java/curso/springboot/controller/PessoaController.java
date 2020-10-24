@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,6 +154,41 @@ public class PessoaController {
 		modelAndView.addObject("pessoaobj", new Pessoa());
 		
 		return modelAndView;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="**/pesquisarpessoa")
+	public void gerarRelatorioDeClientes(@RequestParam("pesquisanome") String nome,
+	                                     @RequestParam("pesquisasexo") String sexo,
+	                                     HttpServletRequest request,
+	                                     HttpServletResponse response) throws Exception {
+		
+		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+		
+		if(sexo != null && !sexo.isEmpty() && nome != null && !nome.isEmpty()) {
+			
+			pessoas = pessoaRepository.findPessoaByNomeESexo(nome, sexo);
+		}
+		else if(nome != null && !nome.isEmpty()) {
+			
+			pessoas = pessoaRepository.findPessoaByNome(nome);
+		}
+		else{
+			
+			Iterable<Pessoa> iterator = pessoaRepository.findAll();
+			
+			for(Pessoa pessoa : iterator) {
+				
+				pessoas.add(pessoa);
+			}
+		}
+		
+		/* Chama o serviço que realiza a geração do relatorio */
+		byte[] relatorioEmPdf = reportUtil.gerarRelatorio(pessoas, "pessoa", request.getServletContext());
+		
+		/* Tamanho da resposta */
+		response.setContentLength(relatorioEmPdf.length);
+		
+		return;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/inserirtelefone/{idpessoa}")
