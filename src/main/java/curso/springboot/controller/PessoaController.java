@@ -21,246 +21,267 @@ import org.springframework.web.servlet.ModelAndView;
 import curso.springboot.model.Pessoa;
 import curso.springboot.model.Telefone;
 import curso.springboot.repository.PessoaRepository;
+import curso.springboot.repository.ProfissaoRepository;
 import curso.springboot.repository.TelefoneRepository;
 import curso.springboot.util.ReportUtil;
 
 @Controller
 public class PessoaController {
-	
+
 	@Autowired
 	private PessoaRepository pessoaRepository;
-	
+
 	@Autowired
 	private TelefoneRepository telefoneRepository;
 	
 	@Autowired
+	private ProfissaoRepository profissaoRepository;
+
+	@Autowired
 	private ReportUtil reportUtil;
-	
-	@RequestMapping(method=RequestMethod.GET, value="/cadastropessoa")
+
+	@RequestMapping(method = RequestMethod.GET, value = "/cadastropessoa")
 	public ModelAndView iniciar() {
-		
+
 		Iterable<Pessoa> pessoas = pessoaRepository.findAll();
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
-		
+
 		modelAndView.addObject("pessoaobj", new Pessoa());
-		
+
 		modelAndView.addObject("pessoas", pessoas);
 		
+		modelAndView.addObject("profissoes", profissaoRepository.findAll());
+
 		return modelAndView;
 	}
-	
-	// O valor **/ antes de salvarpessoa na string "**/salvarpessoa, ignora qualquer coisa na url
-	// que vem antes do /salvarpessoa, considerando apenas o /salvar pessoa como um trigger para chamar o controller
-	@RequestMapping(method=RequestMethod.POST, value="**/salvarpessoa")
+
+	// O valor **/ antes de salvarpessoa na string "**/salvarpessoa, ignora qualquer
+	// coisa na url
+	// que vem antes do /salvarpessoa, considerando apenas o /salvar pessoa como um
+	// trigger para chamar o controller
+	@RequestMapping(method = RequestMethod.POST, value = "**/salvarpessoa")
 	public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult bindingResult) {
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
-		
+
 		Iterable<Pessoa> pessoas = pessoaRepository.findAll();
-		
-		if(bindingResult.hasErrors()) {
-			
+
+		if (bindingResult.hasErrors()) {
+
 			modelAndView.addObject("pessoas", pessoas);
-			
+
 			modelAndView.addObject("pessoaobj", pessoa);
-			
+
 			// Retorna as mensagens de erro para a view
 			List<String> mensagensDeErro = new ArrayList<String>();
-			
-			for(ObjectError objectError : bindingResult.getAllErrors()) {
-				
+
+			for (ObjectError objectError : bindingResult.getAllErrors()) {
+
 				mensagensDeErro.add(objectError.getDefaultMessage());
 			}
-			
+
 			modelAndView.addObject("mensagensDeErro", mensagensDeErro);
 			
+			modelAndView.addObject("profissoes", profissaoRepository.findAll());
+
 			return modelAndView;
 		}
-		
-		// Comando para corrigir erro ao editar endereço de uma pessoa ja cadastrada e que possui telefones
+
+		// Comando para corrigir erro ao editar endereço de uma pessoa ja cadastrada e
+		// que possui telefones
 		pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId()));
-		
+
 		pessoaRepository.save(pessoa);
-		
+
 		pessoas = pessoaRepository.findAll();
-		
+
 		modelAndView.addObject("pessoas", pessoas);
-		
+
 		modelAndView.addObject("pessoaobj", new Pessoa());
-		
+
 		return modelAndView;
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value="/listapessoas")
+
+	@RequestMapping(method = RequestMethod.GET, value = "/listapessoas")
 	public ModelAndView listar() {
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
-		
+
 		Iterable<Pessoa> pessoas = pessoaRepository.findAll();
-		
+
 		modelAndView.addObject("pessoas", pessoas);
-		
+
 		modelAndView.addObject("pessoaobj", new Pessoa());
-		
+
 		return modelAndView;
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value="/editarpessoa/{idpessoa}")
+
+	@RequestMapping(method = RequestMethod.GET, value = "/editarpessoa/{idpessoa}")
 	public ModelAndView editar(@PathVariable("idpessoa") Long idPessoa) {
-		
+
 		Optional<Pessoa> pessoa = pessoaRepository.findById(idPessoa);
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
-		
+
 		modelAndView.addObject("pessoaobj", pessoa.get());
 		
+		modelAndView.addObject("profissoes", profissaoRepository.findAll());
+
 		return modelAndView;
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value="/removerpessoa/{idpessoa}")
+
+	@RequestMapping(method = RequestMethod.GET, value = "/removerpessoa/{idpessoa}")
 	public ModelAndView remover(@PathVariable("idpessoa") Long idPessoa) {
-		
+
 		pessoaRepository.deleteById(idPessoa);
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
-		
+
 		modelAndView.addObject("pessoas", pessoaRepository.findAll());
-		
+
 		modelAndView.addObject("pessoaobj", new Pessoa());
-		
+
 		return modelAndView;
 	}
-	
-	@RequestMapping(method = RequestMethod.POST, value="**/pesquisarpessoa")
+
+	@RequestMapping(method = RequestMethod.POST, value = "**/pesquisarpessoa")
 	public ModelAndView pesquisar(@RequestParam("pesquisanome") String nome,
-								  @RequestParam("pesquisasexo") String sexo) {
-		
+			@RequestParam("pesquisasexo") String sexo) {
+
 		List<Pessoa> pessoas = new ArrayList<Pessoa>();
-		
-		if(sexo != null && !sexo.isEmpty()) {
-			
+
+		if (sexo != null && !sexo.isEmpty()) {
+
 			pessoas = pessoaRepository.findPessoaByNomeESexo(nome, sexo);
-		}
-		else {
-			
+		} else {
+
 			pessoas = pessoaRepository.findPessoaByNome(nome);
 		}
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
-		
+
 		modelAndView.addObject("pessoas", pessoas);
-		
+
 		modelAndView.addObject("pessoaobj", new Pessoa());
-		
+
 		return modelAndView;
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value="**/pesquisarpessoa")
+
+	@RequestMapping(method = RequestMethod.GET, value = "**/pesquisarpessoa")
 	public void gerarRelatorioDeClientes(@RequestParam("pesquisanome") String nome,
-	                                     @RequestParam("pesquisasexo") String sexo,
-	                                     HttpServletRequest request,
-	                                     HttpServletResponse response) throws Exception {
-		
+			@RequestParam("pesquisasexo") String sexo, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
 		List<Pessoa> pessoas = new ArrayList<Pessoa>();
-		
-		if(sexo != null && !sexo.isEmpty() && nome != null && !nome.isEmpty()) {
-			
+
+		if (sexo != null && !sexo.isEmpty() && nome != null && !nome.isEmpty()) {
+
 			pessoas = pessoaRepository.findPessoaByNomeESexo(nome, sexo);
-		}
-		else if(nome != null && !nome.isEmpty()) {
-			
+		} else if (nome != null && !nome.isEmpty()) {
+
 			pessoas = pessoaRepository.findPessoaByNome(nome);
-		}
-		else{
-			
+		} else if (sexo != null && !sexo.isEmpty()) {
+
+			pessoas = pessoaRepository.findPessoaBySexo(sexo);
+		} else {
+
 			Iterable<Pessoa> iterator = pessoaRepository.findAll();
-			
-			for(Pessoa pessoa : iterator) {
-				
+
+			for (Pessoa pessoa : iterator) {
+
 				pessoas.add(pessoa);
 			}
 		}
-		
+
 		/* Chama o serviço que realiza a geração do relatorio */
 		byte[] relatorioEmPdf = reportUtil.gerarRelatorio(pessoas, "pessoa", request.getServletContext());
-		
+
 		/* Tamanho da resposta */
 		response.setContentLength(relatorioEmPdf.length);
-		
-		return;
+
+		/* Definir na resposta o tipo de arquivo */
+		response.setContentType("application/octet-stream");
+
+		/* Definir o cabeçalho da resposta */
+		String headerKey = "Content-Disposition";
+
+		String headerValue = String.format("attachment; filename=\"%s\"", "relatorio-de-clientes.pdf");
+
+		response.setHeader(headerKey, headerValue);
+
+		/* Finaliza e retorna o conteudo para o navegador */
+		response.getOutputStream().write(relatorioEmPdf);
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value="/inserirtelefone/{idpessoa}")
+
+	@RequestMapping(method = RequestMethod.GET, value = "/inserirtelefone/{idpessoa}")
 	public ModelAndView inserirTelefones(@PathVariable("idpessoa") Long idPessoa) {
-		
+
 		Optional<Pessoa> pessoa = pessoaRepository.findById(idPessoa);
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastrotelefone");
-		
+
 		modelAndView.addObject("pessoaobj", pessoa.get());
-		
+
 		modelAndView.addObject("telefones", telefoneRepository.getTelefones(idPessoa));
-		
+
 		return modelAndView;
 	}
-	
-	@RequestMapping(method = RequestMethod.POST, value="**/salvarTelefone/{idpessoa}")
+
+	@RequestMapping(method = RequestMethod.POST, value = "**/salvarTelefone/{idpessoa}")
 	public ModelAndView salvarTelefone(Telefone telefone, @PathVariable("idpessoa") Long idPessoa) {
-		
+
 		Pessoa pessoa = pessoaRepository.findById(idPessoa).get();
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastrotelefone");
-		
+
 		modelAndView.addObject("pessoaobj", pessoa);
-		
-		Boolean telefoneInvalido =  (telefone != null && 
-								    (telefone.getNumero() != null && telefone.getNumero().isEmpty()) 
-								 || telefone.getNumero() == null
-				                 || (telefone.getTipo() != null && telefone.getTipo().isEmpty())
-				                 || telefone.getTipo() == null);
-		
-		if(telefoneInvalido) {
-			
+
+		Boolean telefoneInvalido = (telefone != null && (telefone.getNumero() != null && telefone.getNumero().isEmpty())
+				|| telefone.getNumero() == null || (telefone.getTipo() != null && telefone.getTipo().isEmpty())
+				|| telefone.getTipo() == null);
+
+		if (telefoneInvalido) {
+
 			modelAndView.addObject("telefones", telefoneRepository.getTelefones(idPessoa));
-			
+
 			List<String> mensagensDeErro = new ArrayList<String>();
-			
-			if(telefone.getNumero().isEmpty()) {
+
+			if (telefone.getNumero().isEmpty()) {
 				mensagensDeErro.add("O numero deve ser informado!");
 			}
-			
-			if(telefone.getTipo().isEmpty()) {
+
+			if (telefone.getTipo().isEmpty()) {
 				mensagensDeErro.add("O tipo deve ser informado!");
 			}
-			
+
 			modelAndView.addObject("mensagensDeErro", mensagensDeErro);
-			
+
 			return modelAndView;
 		}
-		
+
 		telefone.setPessoa(pessoa);
-		
+
 		telefoneRepository.save(telefone);
-		
+
 		modelAndView.addObject("telefones", telefoneRepository.getTelefones(idPessoa));
-		
+
 		return modelAndView;
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value="/removerTelefone/{idtelefone}")
+
+	@RequestMapping(method = RequestMethod.GET, value = "/removerTelefone/{idtelefone}")
 	public ModelAndView excluirTelefone(@PathVariable("idtelefone") Long idTelefone) {
-		
+
 		Pessoa pessoa = telefoneRepository.findById(idTelefone).get().getPessoa();
-		
+
 		telefoneRepository.deleteById(idTelefone);
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastrotelefone");
-		
+
 		modelAndView.addObject("pessoaobj", pessoa);
-		
+
 		modelAndView.addObject("telefones", telefoneRepository.getTelefones(pessoa.getId()));
-		
+
 		return modelAndView;
 	}
 }

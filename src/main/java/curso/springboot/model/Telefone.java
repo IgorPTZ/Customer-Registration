@@ -12,7 +12,7 @@ import org.hibernate.annotations.ForeignKey;
 
 @SuppressWarnings("deprecation")
 @Entity
-public class Telefone implements Serializable{
+public class Telefone implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
