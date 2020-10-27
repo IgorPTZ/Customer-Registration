@@ -99,6 +99,8 @@ public class PessoaController {
 		modelAndView.addObject("pessoas", pessoas);
 
 		modelAndView.addObject("pessoaobj", new Pessoa());
+		
+		modelAndView.addObject("profissoes", profissaoRepository.findAll());
 
 		return modelAndView;
 	}
@@ -113,6 +115,8 @@ public class PessoaController {
 		modelAndView.addObject("pessoas", pessoas);
 
 		modelAndView.addObject("pessoaobj", new Pessoa());
+		
+		modelAndView.addObject("profissoes", profissaoRepository.findAll());
 
 		return modelAndView;
 	}
@@ -141,6 +145,8 @@ public class PessoaController {
 		modelAndView.addObject("pessoas", pessoaRepository.findAll());
 
 		modelAndView.addObject("pessoaobj", new Pessoa());
+		
+		modelAndView.addObject("profissoes", profissaoRepository.findAll());
 
 		return modelAndView;
 	}
@@ -228,7 +234,7 @@ public class PessoaController {
 		return modelAndView;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "**/salvarTelefone/{idpessoa}")
+	@RequestMapping(method = RequestMethod.POST, value = "**/salvartelefone/{idpessoa}")
 	public ModelAndView salvarTelefone(Telefone telefone, @PathVariable("idpessoa") Long idPessoa) {
 
 		Pessoa pessoa = pessoaRepository.findById(idPessoa).get();
@@ -269,7 +275,7 @@ public class PessoaController {
 		return modelAndView;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/removerTelefone/{idtelefone}")
+	@RequestMapping(method = RequestMethod.GET, value = "/removertelefone/{idtelefone}")
 	public ModelAndView excluirTelefone(@PathVariable("idtelefone") Long idTelefone) {
 
 		Pessoa pessoa = telefoneRepository.findById(idTelefone).get().getPessoa();

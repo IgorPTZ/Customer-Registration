@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -53,6 +55,9 @@ public class Pessoa implements Serializable {
 	
 	@ManyToOne
 	private Profissao profissao;
+	
+	@Enumerated(EnumType.STRING)
+	private Cargo cargo;
 	
 	@OneToMany(mappedBy="pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Telefone> telefones;
@@ -159,6 +164,14 @@ public class Pessoa implements Serializable {
 
 	public void setProfissao(Profissao profissao) {
 		this.profissao = profissao;
+	}
+	
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
 	}
 
 	@Override
