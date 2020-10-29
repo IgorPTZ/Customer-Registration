@@ -73,19 +73,26 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				</div>
 				
 				<div class="row">
-					<div class="input-field col s4">
+					<div class="input-field col s6">
 						<label for="idade" class="active">Idade</label>
 						<input placeholder="Idade" name="idade" th:field="*{idade}" id="idade" class="validate">
 					</div>
 					
-					<div class="input-field col s4">
+					<div class="input-field col s6">
 						<label for="profissao" class="active">Profissão</label>
 						<select class="browser-default" th:field="*{profissao}" id="profissao">
 							<option th:each="p : ${profissoes}" th:value="${p.id}" th:text="${p.nome}">
 						</select>
 					</div>
+				</div>
+				
+				<div class="row">
+					<div class="input-field col s6">
+						<label for="dataNascimento" class="active">Data de Nascimento</label>
+						<input type="date" placeholder="Data de nascimento" name="dataNascimento" th:field="*{dataNascimento}" id="dataNascimento" class="validate">
+					</div>
 					
-					<div class="input-field col s4">
+					<div class="input-field col s6">
 						<label for="cargo" class="active">Cargo</label>
 						<select class="browser-default" th:field="*{cargo}" id="cargo">
 							<option th:each="c : ${T(curso.springboot.model.Cargo).values()}" th:value="${c}" th:text="${c}">
