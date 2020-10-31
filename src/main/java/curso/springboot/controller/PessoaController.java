@@ -1,5 +1,6 @@
 package curso.springboot.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import curso.springboot.model.Pessoa;
@@ -60,8 +62,10 @@ public class PessoaController {
 	// coisa na url
 	// que vem antes do /salvarpessoa, considerando apenas o /salvar pessoa como um
 	// trigger para chamar o controller
-	@RequestMapping(method = RequestMethod.POST, value = "**/salvarpessoa")
-	public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult bindingResult) {
+	@RequestMapping(method = RequestMethod.POST, 
+			        value = "**/salvarpessoa",
+			        consumes = {"multipart/form-data"})
+	public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult bindingResult, final MultipartFile file) throws IOException {
 
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
 
@@ -91,7 +95,17 @@ public class PessoaController {
 		// Comando para corrigir erro ao editar endereço de uma pessoa ja cadastrada e
 		// que possui telefones
 		pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId()));
-
+		
+		if(file.getSize() > 0) {
+			
+			pessoa.setArquivo(file.getBytes());
+		}
+		else if(pessoa.getId() != null && pessoa.getId() > 0){
+			byte[] arquivo = pessoaRepository.findById(pessoa.getId()).get().getArquivo();
+			
+			pessoa.setArquivo(arquivo);
+		}
+		
 		pessoaRepository.save(pessoa);
 
 		pessoas = pessoaRepository.findAll();

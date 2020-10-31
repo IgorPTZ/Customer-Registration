@@ -11,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -70,6 +71,9 @@ public class Pessoa implements Serializable {
 	
 	@OneToMany(mappedBy="pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Telefone> telefones;
+	
+	@Lob
+	private byte[] arquivo;
 
 	public Long getId() {
 		return id;
@@ -189,6 +193,14 @@ public class Pessoa implements Serializable {
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+	
+	public byte[] getArquivo() {
+		return arquivo;
+	}
+
+	public void setArquivo(byte[] arquivo) {
+		this.arquivo = arquivo;
 	}
 
 	@Override
