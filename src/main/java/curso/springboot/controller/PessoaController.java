@@ -66,7 +66,11 @@ public class PessoaController {
 			        value = "**/salvarpessoa",
 			        consumes = {"multipart/form-data"})
 	public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult bindingResult, final MultipartFile file) throws IOException {
-
+		
+		System.out.println(file.getContentType());
+		
+		System.out.println(file.getOriginalFilename());
+		
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
 
 		Iterable<Pessoa> pessoas = pessoaRepository.findAll();
@@ -99,11 +103,20 @@ public class PessoaController {
 		if(file.getSize() > 0) {
 			
 			pessoa.setArquivo(file.getBytes());
+			
+			pessoa.setNomeDoArquivo(file.getOriginalFilename());
+			
+			pessoa.setTipoDoArquivo(file.getContentType());
 		}
 		else if(pessoa.getId() != null && pessoa.getId() > 0){
-			byte[] arquivo = pessoaRepository.findById(pessoa.getId()).get().getArquivo();
 			
-			pessoa.setArquivo(arquivo);
+			Pessoa variavelAuxiliar = pessoaRepository.findById(pessoa.getId()).get();
+			
+			pessoa.setArquivo(variavelAuxiliar.getArquivo());
+			
+			pessoa.setNomeDoArquivo(variavelAuxiliar.getNomeDoArquivo());
+			
+			pessoa.setTipoDoArquivo(variavelAuxiliar.getTipoDoArquivo());
 		}
 		
 		pessoaRepository.save(pessoa);

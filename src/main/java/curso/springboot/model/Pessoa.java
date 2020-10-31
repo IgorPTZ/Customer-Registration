@@ -74,6 +74,10 @@ public class Pessoa implements Serializable {
 	
 	@Lob
 	private byte[] arquivo;
+	
+	private String tipoDoArquivo;
+	
+	private String nomeDoArquivo;
 
 	public Long getId() {
 		return id;
@@ -201,6 +205,22 @@ public class Pessoa implements Serializable {
 
 	public void setArquivo(byte[] arquivo) {
 		this.arquivo = arquivo;
+	}
+	
+	public String getTipoDoArquivo() {
+		return tipoDoArquivo;
+	}
+
+	public void setTipoDoArquivo(String tipoDoArquivo) {
+		this.tipoDoArquivo = tipoDoArquivo;
+	}
+
+	public String getNomeDoArquivo() {
+		return nomeDoArquivo;
+	}
+
+	public void setNomeDoArquivo(String nomeDoArquivo) {
+		this.nomeDoArquivo = nomeDoArquivo;
 	}
 
 	@Override
