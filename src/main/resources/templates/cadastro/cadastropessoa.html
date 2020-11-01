@@ -107,7 +107,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				<div class="row">
 					<div class="input-field col s12">
 						<label for="file" class="active">Arquivo do cliente</label>
-						<input type="file" id="file" name="file" class="validate">
+						<input type="file" id="file" name="file" class="file-field input-field">
 					</div>
 				</div>
 				
@@ -207,7 +207,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				<th>Id</th>
 				<th>Nome</th>
 				<th>Sobrenome</th>
-				<th>Idade</th>
+				<th>Arquivo</th>
 				<th>Editar</th>
 				<th>Excluir</th>
 			</tr>	
@@ -216,7 +216,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			<td th:text = "${pessoa.id}"></td>
 			<td><a th:href="@{/inserirtelefone/{idpessoa}(idpessoa=${pessoa.id})}" ><span th:text = "${pessoa.nome}"></span></a></td>
 			<td th:text = "${pessoa.sobrenome}"></td>
-			<td th:text = "${pessoa.idade}"></td>
+			<td><a th:if="${pessoa.arquivo != null}" th:href="@{/downloadarquivo/{idpessoa}(idpessoa=${pessoa.id})}">Download</a></td>
 			<td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Editar</a></td>
 			<td><a th:href="@{/removerpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Excluir</a></td>
 		</tr>

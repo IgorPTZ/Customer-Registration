@@ -177,6 +177,35 @@ public class PessoaController {
 
 		return modelAndView;
 	}
+	
+	
+	@RequestMapping(method = RequestMethod.GET, value ="**/downloadarquivo/{idpessoa}")
+	public void downloadArquivoPessoal(@PathVariable("idpessoa") Long idPessoa,
+									   HttpServletResponse response) throws IOException {
+		
+		/* Consulta o objeto pessoa no banco de dados */
+		Pessoa pessoa = pessoaRepository.findById(idPessoa).get();
+		
+		if(pessoa.getArquivo() != null) {
+			
+			/* Informa o tamanha do resposta */
+			response.setContentLength(pessoa.getArquivo().length);
+			
+			/* Informa o tipo de arquivo que sera disponibilizado para download */
+			response.setContentType(pessoa.getTipoDoArquivo());
+			
+			/* Define o cabeçalho da resposta */
+			String headerKey = "Content-Disposition";
+			
+			String headerValue = String.format("attachment; filename=\"%s\"", pessoa.getNomeDoArquivo());
+			
+			response.setHeader(headerKey, headerValue);
+			
+			/* Finaliza a resposta passando o arquivo */
+			response.getOutputStream().write(pessoa.getArquivo());
+		}
+	}
+	
 
 	@RequestMapping(method = RequestMethod.POST, value = "**/pesquisarpessoa")
 	public ModelAndView pesquisar(@RequestParam("pesquisanome") String nome,
