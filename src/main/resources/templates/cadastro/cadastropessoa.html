@@ -212,7 +212,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				<th>Excluir</th>
 			</tr>	
 		</thead>
-		<tr th:each = "pessoa : ${pessoas}">
+		<tr th:each = "pessoa : ${pessoas.content}">
 			<td th:text = "${pessoa.id}"></td>
 			<td><a th:href="@{/inserirtelefone/{idpessoa}(idpessoa=${pessoa.id})}" ><span th:text = "${pessoa.nome}"></span></a></td>
 			<td th:text = "${pessoa.sobrenome}"></td>
