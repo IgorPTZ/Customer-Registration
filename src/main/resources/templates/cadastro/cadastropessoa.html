@@ -28,9 +28,21 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			color: white;
 		}
 		
+		table {
+			width: 100%
+		}
+		
+		table th {
+			background: #eee;
+		}
+		
+		table td, table th{
+			border: 1px solid grey;
+		}
+		
 		::-moz-placeholder{
             color: rgba(38, 166, 154, 1);
-        }
+        }  
 	</style>
 </head>
 
@@ -221,6 +233,23 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			<td><a th:href="@{/removerpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Excluir</a></td>
 		</tr>
 	</table>
+	
+	<div class="row" style="margin-top: 30px">
+		<center>
+			
+			<span th:if="${pessoas.hasPrevious()}">
+				<a th:href="@{/pessoasporpaginacao(page=${pessoas.number - 1}, size=${pessoas.size})}">Anterior</a>
+			</span>
+		
+			<th:block th:each="i : ${#numbers.sequence(0, pessoas.totalPages - 1)}">
+				<a th:href="@{/pessoasporpaginacao(page=${i}, size=${pessoas.size})}">[[ ${i} + 1 ]]</a>
+			</th:block>
+			
+			<span th:if="${pessoas.hasNext()}">
+				<a th:href="@{/pessoasporpaginacao(page=${pessoas.number + 1}, size=${pessoas.size})}">Posterior</a>
+			</span>
+		</center>
+	</div>
 	
 	 <script>
         $(document).ready(function() {

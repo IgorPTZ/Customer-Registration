@@ -66,7 +66,7 @@ public class PessoaController {
 	/* Metodo chamado ao selecionar um numero de pagina da paginação presente no front-end */
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/pessoasporpaginacao")
-	public ModelAndView wcarregarPessoasPorPaginacao(@PageableDefault(size = 5) Pageable pageable, ModelAndView modelAndView) {
+	public ModelAndView carregarPessoasPorPaginacao(@PageableDefault(size = 5) Pageable pageable, ModelAndView modelAndView) {
 		
 		Page<Pessoa> pagePessoa = pessoaRepository.findAll(pageable);
 		
