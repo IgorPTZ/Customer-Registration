@@ -224,16 +224,17 @@ public class PessoaController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "**/pesquisarpessoa")
 	public ModelAndView pesquisar(@RequestParam("pesquisanome") String nome,
-			@RequestParam("pesquisasexo") String sexo) {
+								  @RequestParam("pesquisasexo") String sexo,
+		                          @PageableDefault(size = 5, sort = {"nome"}) Pageable pageable) {
 
-		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+		Page<Pessoa> pessoas = null;
 
 		if (sexo != null && !sexo.isEmpty()) {
 
-			pessoas = pessoaRepository.findPessoaByNomeESexo(nome, sexo);
+			//pessoas = pessoaRepository.findPessoaByNomeESexo(nome, sexo);
 		} else {
 
-			pessoas = pessoaRepository.findPessoaByNome(nome);
+			pessoas = pessoaRepository.findPessoaByNome(nome, pageable);
 		}
 
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
@@ -241,6 +242,8 @@ public class PessoaController {
 		modelAndView.addObject("pessoas", pessoas);
 
 		modelAndView.addObject("pessoaobj", new Pessoa());
+		
+		modelAndView.addObject("pesquisanome", nome);
 
 		return modelAndView;
 	}

@@ -185,7 +185,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				<div class="row">
 					<div class="input-field col s6">
 						<label for="pesquisanome" class="active">Pequisar por nome:</label>
-						<input name="pesquisanome" id="pesquisanome" class="validate">
+						<input name="pesquisanome" id="pesquisanome" class="validate" th:value="${pesquisanome}">
 					</div>
 					
 					<div class="input-field col s6">
@@ -238,15 +238,15 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 		<center>
 			
 			<span th:if="${pessoas.hasPrevious()}">
-				<a th:href="@{/pessoasporpaginacao(page=${pessoas.number - 1}, size=${pessoas.size})}">Anterior</a>
+				<a th:href="@{/pessoasporpaginacao(page=${pessoas.number - 1}, size=${pessoas.size}, pesquisanome=${pesquisanome})}">Anterior</a>
 			</span>
 		
 			<th:block th:each="i : ${#numbers.sequence(0, pessoas.totalPages - 1)}">
-				<a th:href="@{/pessoasporpaginacao(page=${i}, size=${pessoas.size})}">[[ ${i} + 1 ]]</a>
+				<a th:href="@{/pessoasporpaginacao(page=${i}, size=${pessoas.size}, pesquisanome=${pesquisanome})}">[[ ${i} + 1 ]]</a>
 			</th:block>
 			
 			<span th:if="${pessoas.hasNext()}">
-				<a th:href="@{/pessoasporpaginacao(page=${pessoas.number + 1}, size=${pessoas.size})}">Posterior</a>
+				<a th:href="@{/pessoasporpaginacao(page=${pessoas.number + 1}, size=${pessoas.size}, pesquisanome=${pesquisanome})}">Posterior</a>
 			</span>
 		</center>
 	</div>
