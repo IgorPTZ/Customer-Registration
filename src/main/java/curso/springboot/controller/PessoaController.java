@@ -66,13 +66,17 @@ public class PessoaController {
 	/* Metodo chamado ao selecionar um numero de pagina da paginação presente no front-end */
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/pessoasporpaginacao")
-	public ModelAndView carregarPessoasPorPaginacao(@PageableDefault(size = 5) Pageable pageable, ModelAndView modelAndView) {
+	public ModelAndView carregarPessoasPorPaginacao(@PageableDefault(size = 5) Pageable pageable, 
+													@RequestParam("pesquisanome") String nome, 
+													ModelAndView modelAndView) {
 		
-		Page<Pessoa> pagePessoa = pessoaRepository.findAll(pageable);
+		Page<Pessoa> pagePessoa = pessoaRepository.findPessoaByNome(nome, pageable);
 		
 		modelAndView.addObject("pessoas", pagePessoa);
 		
 		modelAndView.addObject("pessoaobj", new Pessoa());
+		
+		modelAndView.addObject("pesquisanome", nome);
 		
 		modelAndView.setViewName("cadastro/cadastropessoa");
 		
@@ -231,7 +235,7 @@ public class PessoaController {
 
 		if (sexo != null && !sexo.isEmpty()) {
 
-			//pessoas = pessoaRepository.findPessoaByNomeESexo(nome, sexo);
+			pessoas = pessoaRepository.findPessoaByNomeESexo(nome, sexo, pageable);
 		} else {
 
 			pessoas = pessoaRepository.findPessoaByNome(nome, pageable);
