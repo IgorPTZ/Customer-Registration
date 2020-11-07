@@ -55,7 +55,7 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long>{
 		
 		pessoa.setSexo(sexo);
 		
-		ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()
+		ExampleMatcher exampleMatcher = ExampleMatcher.matching()
 										.withMatcher("nome", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
 										.withMatcher("sexo", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 		

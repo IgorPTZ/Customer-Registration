@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>Área de Login</title>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	
  	<!-- Compiled and minified CSS -->
@@ -12,6 +12,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 	
 	<style type="text/css">
+		form {
+			margin-top: 15%;
+			margin-left: 35%;
+		}
+		
 		form input[type=submit] {
 			color: white;
 		}
@@ -19,9 +24,10 @@
 
 </head>
 <body>
-	<h1>Login</h1>
+	
 	
 	<form th:action="@{/login}" method="post" class="col s12">
+		<h5>Área de Login</h5>
 		<div class="row">
 			<div class="input-field col s6">
 				<label>Login</label>

@@ -84,9 +84,8 @@ public class PessoaController {
 	}
 
 	// O valor **/ antes de salvarpessoa na string "**/salvarpessoa, ignora qualquer
-	// coisa na url
-	// que vem antes do /salvarpessoa, considerando apenas o /salvar pessoa como um
-	// trigger para chamar o controller
+	// coisa na url que vem antes do /salvarpessoa, considerando apenas o /salvar pessoa 
+	// como um trigger para chamar o controller
 	@RequestMapping(method = RequestMethod.POST, 
 			        value = "**/salvarpessoa",
 			        consumes = {"multipart/form-data"})
